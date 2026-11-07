@@ -66,3 +66,14 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# macOS
+.DS_Store
+.vscode/settings.json
+
+# Python
+__pycache__/
+.venv/
+
+# Inspector logs
+bink_log_*.csv
