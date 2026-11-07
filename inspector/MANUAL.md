@@ -88,7 +88,7 @@ Velocity is the slope of the key's position at the moment it crosses the thresho
 | `Raw` | `R` | ADC readings, without notes |
 | `Temps` | `T` | Request the temperature channels |
 | `Save EEPROM` | `E` | Write the octave count and calibration to flash |
-| `1` to `8` | `1` to `8` | Set the octave count, then read it back |
+| `1` to `7` | `1` to `7` | Set the octave count, then read it back |
 
 The keybed does not acknowledge commands. Each one is listed in the event list when it is sent, which only tells you that it left the computer.
 
@@ -123,7 +123,7 @@ To change it:
 3. Calibrate again. Calibration is stored per key ID, so after a change the rest levels belong to other sensors.
 4. Press `Save EEPROM`.
 
-Bink keybeds have 1 to 7 octaves. `8` exists in the protocol, with the limitations listed in the host protocol document.
+Bink keybeds have 1 to 7 octaves.
 
 ## Temperatures
 
@@ -183,7 +183,7 @@ python3 bink_monitor.py COM7 --uart         # listen only
 | `z` `m` `h` | Capture zero, mid and deep levels |
 | `c` `r` | Compensated, raw |
 | `t` `o` | Request temperatures, request octave count |
-| `1` to `8` | Set the octave count |
+| `1` to `7` | Set the octave count |
 | `E` | Save to flash |
 | `l` | Start or stop logging |
 | `q` | Quit |

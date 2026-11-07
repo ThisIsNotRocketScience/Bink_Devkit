@@ -12,7 +12,7 @@ Interactive keys while running:
     z / m / h   capture zero / mid / deep calibration levels
     c / r       compensated / raw data mode
     t           request temperatures        o  request octave count
-    1..8        set octave count            E  save calibration to flash
+    1..7        set octave count            E  save calibration to flash
     l           toggle CSV logging          q  quit
 
 Offline plotting of a recorded CSV (requires matplotlib):
@@ -189,7 +189,7 @@ class Monitor:
                 f"resyncs: {self.dec.resyncs} | log: {log}"
             )
             lines.append(
-                "[z/m/h] cal zero/mid/deep  [c/r] comp/raw  [t]emps  [1-8] octaves  "
+                "[z/m/h] cal zero/mid/deep  [c/r] comp/raw  [t]emps  [1-7] octaves  "
                 "[E] save  [l]og  [q]uit"
             )
             lines.append("")
@@ -254,7 +254,7 @@ class Monitor:
         elif ch in "zmh":
             self.send({"z": "_", "m": "-", "h": "^"}[ch])
             self.events.append((time.time(), "sent", f"capture {'zero mid deep'.split()['zmh'.index(ch)]}", ""))
-        elif ch in "crtoE12345678":
+        elif ch in "crtoE1234567":
             cmd = {"c": "C", "r": "R", "t": "T", "o": "O", "E": "E"}.get(ch, ch)
             self.send(cmd)
             if ch.isdigit():

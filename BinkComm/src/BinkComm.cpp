@@ -26,7 +26,6 @@ void BinkReceiver::Dispatch(int id, int type, int value) {
     return;
 
   if (type == BINK_VALUE) {
-    // On an 8 octave keybed a key shares this ID, hence the check on the value.
     if (id == BINK_SPECIAL_OCTAVES && value >= 1 && value <= BINK_MAX_OCTAVES) {
       octaves = value;
       handler.OnOctaves(value);
@@ -46,8 +45,8 @@ void BinkReceiver::Dispatch(int id, int type, int value) {
       handler.OnAmbient(value);
     return;
   }
-  // Nothing but keys from here. Without a count any ID in range may be one, and only 8 octaves reach the octave ID.
-  if (id >= (count > 0 ? BINK_KEY_COUNT(count) : kMaxIds) || (id == BINK_SPECIAL_OCTAVES && count < BINK_MAX_OCTAVES))
+  // Nothing but keys from here. Without a count any ID in range may be one.
+  if (id >= (count > 0 ? BINK_KEY_COUNT(count) : kMaxIds))
     return;
 
   switch (type) {

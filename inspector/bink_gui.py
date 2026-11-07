@@ -108,7 +108,7 @@ class BinkGui:
             ttk.Button(board, text=label, width=len(label),
                        command=lambda c=cmd: self._send(c)).pack(side="left", padx=2)
         ttk.Label(board, text="Octaves:").pack(side="left", padx=(8, 0))
-        for n in range(1, 9):
+        for n in range(1, 8):
             ttk.Button(board, text=str(n), width=2,
                        command=lambda c=n: self._set_octaves(c)).pack(side="left")
 
@@ -186,8 +186,8 @@ class BinkGui:
         n = simpledialog.askinteger(
             "Bink inspector",
             "The board did not report its octave count.\n"
-            "How many octaves does this keybed have? (1-8)",
-            parent=self.root, minvalue=1, maxvalue=8, initialvalue=4)
+            "How many octaves does this keybed have? (1-7)",
+            parent=self.root, minvalue=1, maxvalue=7, initialvalue=4)
         if n is None or not self.ser:
             self.pending_events.append("octave count unknown; showing keys as they report")
             return
@@ -272,7 +272,7 @@ class BinkGui:
             if mtype == 3:
                 return
             if mid == ID_OCTAVES:
-                if value != self.octaves and 0 < value <= 8:
+                if value != self.octaves and 0 < value <= 7:
                     self.octaves = value
                     self._layout_keys(value)
                 return

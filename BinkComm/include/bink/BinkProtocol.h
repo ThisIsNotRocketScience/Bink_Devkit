@@ -11,7 +11,7 @@
 // The header is left out when the ID is the previous message's ID plus one.
 #include <stdint.h>
 
-#define BINK_MAX_OCTAVES 8
+#define BINK_MAX_OCTAVES 7
 #define BINK_TEMPERATURE_COUNT 16
 
 // Keys of a keybed of `octaves` octaves: 12 per octave and the top C. Their IDs start at 0, the lowest C.
@@ -69,7 +69,6 @@ enum
     BINK_COMMAND_SETOCTAVES_5 = '5',
     BINK_COMMAND_SETOCTAVES_6 = '6',
     BINK_COMMAND_SETOCTAVES_7 = '7',
-    BINK_COMMAND_SETOCTAVES_88 = '8', // 8 octaves
     BINK_COMMAND_SETDATAMODE_COMPENSATED = 'C',
     BINK_COMMAND_SETDATAMODE_RAW = 'R',
 

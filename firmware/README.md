@@ -60,7 +60,7 @@ The board has a single-turn `VOLUME` pot, an endless dual-wiper rotary pot for `
 | **Synth** | `value`: `LEFT` / `RIGHT` adjust the active parameter | All seven sound parameters with value bars (centered bar for bipolar `Touch`, four-step selector for `Sound`). |
 | **Keys** | `octaves`: `LEFT` / `RIGHT` step through 1 to 7 octaves and send `SETOCTAVES` to the keybed | The full keyboard, with each key lighting up in proportion to its depth. Automatically adopts the octave count reported by the keybed. |
 | **Curve** | `curve`: `LEFT` / `RIGHT` adjust `Curve` | Plot of the active touch response curve, with live dots showing the current pressure of each sounding voice. |
-| **Sensors** | `octave`: `LEFT` / `RIGHT` select octave 0 .. 7 | Live compensated 12-bit position readings and bars for the 12 keys of the selected octave. |
+| **Sensors** | `octave`: `LEFT` / `RIGHT` select octave 0 .. 6 | Live compensated 12-bit position readings and bars for the 12 keys of the selected octave. |
 | **Temp** | Sends `T` to measure temperatures | The 16 temperature channels reported by the keybed, converted to °C. |
 
 ## Architecture on the RP2354B

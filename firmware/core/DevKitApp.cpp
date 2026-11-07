@@ -29,7 +29,6 @@ static bool ButtonPressed(HalButton button, ButtonState &state) {
 // (BinkReceiver::Octaves); the page changes the keybed's configuration with
 // SETOCTAVES_* and the keybed's next announcement confirms it here.
 int gDisplayOctaves = 2;
-static const int kMaxKeybedOctaves = 7; // the longest Bink keybed
 
 // Probe the keybed for its octave count and apply it to the display.
 //
@@ -295,8 +294,8 @@ public:
   virtual void Step(bool next) {
     int octaves = gDisplayOctaves + (next ? 1 : -1);
     if (octaves < 1)
-      octaves = kMaxKeybedOctaves;
-    else if (octaves > kMaxKeybedOctaves)
+      octaves = BINK_MAX_OCTAVES;
+    else if (octaves > BINK_MAX_OCTAVES)
       octaves = 1;
     // Show the requested count right away; the keybed's confirmation (or a
     // different count, if it refused) arrives through SyncOctavesFromKeybed.

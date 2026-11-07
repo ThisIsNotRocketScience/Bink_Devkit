@@ -114,7 +114,7 @@ The ID sequence `5, 6, 7` on the UART is `85 xx xx  yy yy  zz zz`.
 | 0 .. 12N - 1 | keys of an N octave keybed, 0 is the lowest C | position |
 | 12N | the top C | position |
 | 12N + 1 | ambient magnetic field sensor, not a key | position |
-| 90 | octave count (`BINK_SPECIAL_OCTAVES`) | 1 .. 8 |
+| 90 | octave count (`BINK_SPECIAL_OCTAVES`) | 1 .. 7 |
 | 100 .. 115 | temperature channels | 12-bit ADC reading |
 
 Key IDs count semitones, so `id % 12` gives the note within the octave. Which MIDI note ID 0 is belongs to the host; the DevKit uses `id + 24`.
@@ -222,7 +222,6 @@ One byte each. An unknown byte is ignored. The keybed never confirms a command, 
 | `O` | `BINK_COMMAND_SENDOCTAVES` | send ID 90 |
 | `T` | `BINK_COMMAND_SENDTEMPERATURES` | send IDs 100 .. 115 |
 | `1` .. `7` | `BINK_COMMAND_SETOCTAVES_n` | set the octave count |
-| `8` | `BINK_COMMAND_SETOCTAVES_88` | set 8 octaves, see the limitations |
 | `_` | `BINK_COMMAND_CAPTUREZEROLEVELS` | store the current readings as rest levels |
 | `-` | `BINK_COMMAND_CAPTUREMEDIUMLEVELS` | store the current readings as mid levels |
 | `^` | `BINK_COMMAND_CAPTUREHIGHLEVELS` | store the current readings as deep levels |
@@ -304,7 +303,7 @@ on the UART. Boot order is not guaranteed, so either side can come up first.
 
 1. Open the receiver at 1,000,000 baud and the transmitter at 115,200 baud.
 2. Send `U`. This gets the stream back if the keybed was left in USB mode, and asks for the octave count.
-3. Until ID 90 arrives with a value from 1 to 8: send `O` every 500 ms.
+3. Until ID 90 arrives with a value from 1 to 7: send `O` every 500 ms.
 4. Size everything for that count: 12N + 1 keys.
 5. Optionally send `T` for the temperatures.
 6. Note the time of each ID 90. After 5 seconds without one, consider the link lost and go back to step 2. This also catches a keybed that was unplugged.
@@ -324,12 +323,12 @@ If the keybed is already in USB mode, raising DTR makes it send the temperatures
 
 ### Do not force the octave count
 
-The octave count belongs to the keybed: it is set once for the hardware and kept in flash. A host should read it. Sending `1` to `8` as part of a start-up
+The octave count belongs to the keybed: it is set once for the hardware and kept in flash. A host should read it. Sending `1` to `7` as part of a start-up
 sequence maps the sensors for the wrong keybed if the number is wrong, and the keys will come out mixed up.
 
 ## Octave count
 
-`1` to `8` rebuilds the map from sensors to key IDs at once.
+`1` to `7` rebuilds the map from sensors to key IDs at once.
 
 - The keybed does not announce the change: send `O` afterwards.
 - The change is lost at power-off unless followed by `E`.
@@ -407,7 +406,6 @@ Worth designing around, in this firmware:
 | Limitation | What to do |
 | --- | --- |
 | Above 5 octaves on a single board: a sensor system covers 2 octaves on the main board and up to 3 on an extension (ADC channels 5 and 6 in the firmware's 6- and 7-octave maps are not connected on the board). | 6 and 7 octave keybeds have a second Bink-25 at the other end of the keyboard. The host connects to both and combines their key ranges. |
-| 8 octaves: also takes ADC channel 7, which carries the temperatures, and key IDs run up to 97 and include 90, so a key can look like an octave announcement. The name `SETOCTAVES_88` is historic; it sets 8 octaves. | Accept ID 90 only with a value of 1 to 8, as `BinkReceiver` does, and expect the occasional wrong result on a key at that position. |
 | USB: a note on or off can be dropped when the host reads too slowly, and the keybed does not resend it. | Read the port continuously. If a key is reported as down and its position falls below 100, release it in the host. |
 | No acknowledgements, no checksums. | Ask for the state after changing it. Treat the position stream as the truth, since it repeats on every change. |
 | Changing the octave count does not release held notes. | Release all notes in the host when the count changes. |
